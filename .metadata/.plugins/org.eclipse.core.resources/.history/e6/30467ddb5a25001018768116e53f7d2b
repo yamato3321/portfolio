@@ -1,0 +1,6 @@
+package com.example.portfolio.repository;
+
+@Repository
+public interface UserRepoository {
+	
+}
