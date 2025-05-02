@@ -1,0 +1,6 @@
+package com.example.portfolio.controller;
+
+@Controller
+public class LoginController {
+
+}
