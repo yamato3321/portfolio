@@ -1,0 +1,46 @@
+package com.example.portfolio.controller;
+
+import java.util.Optional;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
+import com.example.portfolio.entity.User;
+import com.example.portfolio.repository.UserRepository;
+
+@Controller
+public class LoginController {
+
+	@Autowired
+	private UserRepository userRepository;
+	
+	//ログイン画面の表示
+	@GetMapping("/login")
+	public String showLoginForm() {
+		return"login";
+		
+	}
+	
+	@PostMapping("/login")
+	public String loginUser(@RequestParam String email,
+							@RequestParam String password,
+							Model model) {
+		
+		Optional<User> userOpt = userRepository.findByEmailAndPassword(email,password);
+
+		
+		if(userOpt.isPresent()) {
+			//ログイン成功
+			return "redirect:/home";
+		}else {
+			//ログイン失敗
+			model.addAttribute("error","Invalid email or password");
+			return"login";
+		}
+	}
+	
+}
