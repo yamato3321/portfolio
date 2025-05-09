@@ -1,8 +1,0 @@
-package com.example.portfolio.repository;
-
-import org.springframework.data.jpa.repository.JpaRepository;
-
-@Repository
-public interface UserRepoository extends JpaRepository<T, ID> {
-	
-}
