@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Welcome</title>
+</head>
+<body>
+    <h1>Welcome to Your Portfolio App!</h1>
+	<p>ログイン中のユーザー: <span th:text="${email}"></span></p>
+	<form th:action="@{/login}" method="post">
+	    <button type="submit">ログイン画面へ</button>
+	</form>
+
+</body>
+</html>

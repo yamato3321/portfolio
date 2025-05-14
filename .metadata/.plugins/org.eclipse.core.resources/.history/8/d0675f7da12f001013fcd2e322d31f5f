@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Task List</title>
+</head>
+<body>
+    <h1>あなたのタスク一覧</h1>
+	<p><a th:href="@{/new}">＋ 新しいタスクを追加</a></p>
+    <table border="1">
+        <tr>
+            <th>タイトル</th>
+            <th>詳細</th>
+            <th>期限</th>
+            <th>完了</th>
+            <th>編集</th>
+            <th>削除</th> <!-- 新しく追加 -->
+        </tr>
+        <tr th:each="task : ${tasks}">
+            <td th:text="${task.title}"></td>
+            <td th:text="${task.description}"></td>
+            <td th:text="${task.deadline}"></td>
+            <td th:text="${task.completed} ? '✔' : '✘'"></td>
+            <td><a th:href="@{/tasks/edit/{id}(id=${task.id})}">編集</a></td>
+            <td>
+                <form th:action="@{'/delete/' + ${task.id}}" method="post" style="display:inline;">
+                    <button type="submit" onclick="return confirm('削除してよろしいですか？')">削除</button>
+                </form>
+            </td>
+        </tr>
+    </table>
+	<form th:action="@{/logout}" method="post">
+	    <button type="submit">ログアウト</button>
+	</form>
+
+</body>
+</html>
