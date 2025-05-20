@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+	<link rel="stylesheet" th:href="@{/css/style.css}">
+    <title>Login</title>
+	<style>
+	    .login-container {
+	        max-width: 400px;
+	        margin: 60px auto;
+	        background-color: white;
+	        padding: 2em;
+	        border-radius: 8px;
+	        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+	    }
+	    .message {
+	        padding: 0.5em;
+	        margin-bottom: 1em;
+	        border-radius: 4px;
+	    }
+	    .error {
+	        background-color: #fce4e4;
+	        color: #c0392b;
+	    }
+	    .success {
+	        background-color: #e8f5e9;
+	        color: #27ae60;
+	    }
+	</style>
+</head>
+<body>
+    <h1>Login</h1>
+	<!-- ログアウトのメッセージの表示 -->
+	<div th:if="${param.logout}" style="color:green;">
+	    <p>ログアウトしました。</p>
+	</div>
+    <!-- エラーメッセージの表示 -->
+    <div th:if="${param.error}" style="color:red;">
+        <p>メールアドレスまたはパスワードが正しくありません。</p>
+    </div>
+	<!-- 登録メッセージの表示 -->
+	<div th:if="${param.signup}" style="color: green;">
+	    <p>登録が完了しました。ログインしてください。</p>
+	</div>
+    <!-- ログインフォーム -->
+    <form method="post" th:action="@{/login}">
+        <label>Email:</label><br>
+        <input type="email" name="username" required><br><br>
+
+        <label>Password:</label><br>
+        <input type="password" name="password" required><br><br>
+		
+		<label>
+		    <input type="checkbox" name="remember-me"> 自動ログインする
+		</label><br>
+		
+        <button type="submit">Login</button>
+    </form>
+</body>
+</html>

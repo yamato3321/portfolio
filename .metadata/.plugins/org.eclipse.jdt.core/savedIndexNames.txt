@@ -18,7 +18,6 @@ INDEX VERSION 1.134+/Users/yoshizakiyamato/Desktop/portfolio/.metadata/.plugins/
 2068828104.index
 2701394916.index
 3749849032.index
-305673447.index
 1173812643.index
 1795789899.index
 623275093.index
