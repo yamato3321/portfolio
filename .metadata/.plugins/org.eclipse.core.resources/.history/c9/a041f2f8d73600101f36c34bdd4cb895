@@ -1,0 +1,8 @@
+package com.example.portfolio.entity;
+
+
+@Entyty
+@Data
+public class Category {
+
+}

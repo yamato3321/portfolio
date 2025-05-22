@@ -1,0 +1,48 @@
+@charset "UTF-8";
+
+/* style.css - 全体共通の基本スタイル */
+
+body {
+    font-family: sans-serif;
+    background-color: #f9f9f9;
+    color: #333;
+    margin: 0;
+    padding: 0;
+}
+
+h1, h2, h3 {
+    color: #2c3e50;
+}
+
+a {
+    color: #3498db;
+    text-decoration: none;
+    margin-right: 1em;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+form {
+    margin: 20px 0;
+}
+
+input, textarea, button {
+    font-size: 1em;
+    padding: 6px;
+    margin: 5px 0;
+}
+
+button {
+    background-color: #3498db;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    cursor: pointer;
+    border-radius: 4px;
+}
+
+button:hover {
+    background-color: #2980b9;
+}

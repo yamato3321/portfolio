@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>新規タスク登録</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+	<link rel="stylesheet" th:href="@{/css/task-form.css}">
+</head>
+<body>
+    <div class="form-container">
+        <h1>新しいタスクを登録</h1>
+
+        <form th:action="@{/new}" method="post" th:object="${task}">
+            <label for="title">タイトル:</label>
+            <input type="text" id="title" th:field="*{title}" required />
+			<div th:if="${#fields.hasErrors('title')}" th:errors="*{title}" style="color:red"></div>
+
+            <label for="description">詳細:</label>
+            <textarea id="description" th:field="*{description}"></textarea>
+			<div th:if="${#fields.hasErrors('description')}" th:errors="*{description}" style="color:red"></div>
+
+
+            <label for="deadline">期限:</label>
+            <input type="date" id="deadline" th:field="*{deadline}" />
+			<div th:if="${#fields.hasErrors('deadline')}" th:errors="*{deadline}" style="color:red"></div>
+
+            <label for="completed">
+                <input type="checkbox" id="completed" th:field="*{completed}" />
+                完了
+            </label>
+
+            <button type="submit">登録</button>
+        </form>
+
+        <a th:href="@{/tasks}" class="back-link">戻る</a>
+    </div>
+</body>
+</html>
+

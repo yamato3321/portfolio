@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Task List</title>
+	<link rel="stylesheet" th:href="@{/css/style.css}" />
+	<link rel="stylesheet" th:href="@{/css/task-list.css}" />
+</head>
+<body>
+    <h1>あなたのタスク一覧</h1>
+	<p>ようこそ<span th:text="${loginName.name} ?: 'ゲスト'">ユーザー名</span>さん</p>
+	<p><a th:href="@{/new}" >＋ 新しいタスクを追加</a></p>
+	<form method="get" th:action="@{/tasks}">
+	    <label>並び順：</label>
+	    <select name="sortBy">
+	        <option value="deadline" th:selected="${sortBy == 'deadline'}">期限</option>
+	        <option value="title" th:selected="${sortBy == 'title'}">タイトル</option>
+	        <option value="createdAt" th:selected="${sortBy == 'createdAt'}">作成日</option>
+	    </select>
+
+	    <select name="sort">
+	        <option value="asc" th:selected="${sort == 'asc'}">昇順</option>
+	        <option value="desc" th:selected="${sort == 'desc'}">降順</option>
+	    </select>
+		
+		<input type="hidden" name="status" th:value="${status}" />
+		<input type="hidden" name="keyword" th:value="${keyword}" />
+	    <button type="submit">並び替え</button>
+	</form>
+
+	<!-- <p>
+	    並び順：
+	    <a th:href="@{/tasks(sort='asc',status=${status},keyword=${keyword})}">昇順</a> |
+	    <a th:href="@{/tasks(sort='desc',status=${status},keyword=${keyword})}">降順</a>
+	</p>
+	<p> -->
+		絞り込み:
+		<a th:href="@{/tasks(sort=${sort},keyword=${keyword},sortBy=${sortBy})}">全て</a>
+		<a th:href="@{/tasks(sort=${sort},status='incomplete',keyword=${keyword},sortBy=${sortBy})}">未完了</a>
+		<a th:href="@{/tasks(sort=${sort},status='completed',keyword=${keyword},sortBy=${sortBy})}">完了</a>
+	</p>
+	<form th:action="@{/tasks}" method="get">
+	    <input type="text" name="keyword" placeholder="キーワード検索" 
+	           th:value="${keyword}" />
+	    <input type="hidden" name="sort" th:value="${sort}" />
+	    <input type="hidden" name="status" th:value="${status}" />
+	    <button type="submit">検索</button>
+	</form>
+
+
+    <table border="1">
+        <tr>
+            <th>タイトル</th>
+            <th>詳細</th>
+			<th>作成日</th>
+            <th>期限</th>
+            <th>完了</th>
+            <th>編集</th>
+            <th>削除</th> <!-- 新しく追加 -->
+        </tr>
+        <tr th:each="task : ${filteredTasks}">
+            <td th:text="${task.title}"></td>
+            <td th:text="${task.description}"></td>
+			<td th:text="${#temporals.format(task.createdAt, 'yyyy-MM-dd')}"></td>
+            <td th:text="${task.deadline}"></td>
+			<td>
+				<form th:action="@{/tasks/update-status}" method="post">
+			    <input type="hidden" name="id" th:value="${task.id}" />
+			    <input type="checkbox" name="completed"
+			           th:checked="${task.completed}" onchange="this.form.submit()" />
+			    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+			</form>  
+			</td>     
+			<td><a th:href="@{/tasks/edit/{id}(id=${task.id})}">編集</a></td>
+            <td>
+                <form th:action="@{'/delete/' + ${task.id}}" method="post" style="display:inline;">
+                    <button type="submit" onclick="return confirm('削除してよろしいですか？')">削除</button>
+                </form>
+            </td>
+        </tr>
+    </table>
+	<div>
+		<span th:text="${tasks.number + 1}">1</span>/<span th:text="${tasks.totalPages}">1</span>
+		<a th:if="${tasks.hasPrevious()}" th:href="@{/tasks(page=${tasks.number - 1},sort=${sort},sortBy=${sortBy},status=${status},keyword=${keyword})}">前へ</a>
+		<a th:if="${tasks.hasNext()}" th:href="@{/tasks(page=${tasks.number + 1},sort=${sort},sortBy=${sortBy},status=${status},keyword=${keyword})}">次へ</a>
+	</div>
+	<form th:action="@{/logout}" method="post">
+	    <button type="submit">ログアウト</button>
+	</form>
+
+</body>
+</html>

@@ -1,0 +1,5 @@
+package com.example.portfolio.repository;
+
+public class CategoryRepository extends JpaRepositoryBean<T> {
+
+}
