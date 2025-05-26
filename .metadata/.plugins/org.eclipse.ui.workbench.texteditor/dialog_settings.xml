@@ -10,6 +10,10 @@
 		<item key="isRegEx" value="false"/>
 		<item key="replaceBarOpen" value="false"/>
 		<list key="findhistory">
+			<item value="spring-boot-starter-test"/>
+			<item value="target"/>
+			<item value="artifactId"/>
+			<item value="category"/>
 			<item value="findByUserAndTitleContainingIgnoreCaseOrUserAndDescriptionContainingIgnoreCase"/>
 			<item value="spring-boot-starter-security"/>
 			<item value="&lt;dependency&gt;&#x0A;    &lt;groupId&gt;nz.net.ultraq.thymeleaf&lt;/groupId&gt;&#x0A;    &lt;artifactId&gt;thymeleaf-layout-dialect&lt;/artifactId&gt;&#x0A;    &lt;version&gt;3.2.0&lt;/version&gt;&#x0A;&lt;/dependency&gt;&#x0A;"/>
