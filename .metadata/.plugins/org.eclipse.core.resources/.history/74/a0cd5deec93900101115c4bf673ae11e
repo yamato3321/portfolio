@@ -1,0 +1,24 @@
+package com.example.portfolio.exception;
+
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ControllerAdvice;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.servlet.NoHandlerFoundException;
+
+@ControllerAdvice
+public class GlobalExceptionHandler {
+
+    // 一般的な例外処理（500）
+    @ExceptionHandler(Exception.class)
+    public String handleException(Exception e, Model model) {
+        model.addAttribute("errorMessage", "予期せぬエラーが発生しました。");
+        return "error/500";
+    }
+
+    // ページが見つからない場合（404）
+    @ExceptionHandler(NoHandlerFoundException.class)
+    public String handle404(NoHandlerFoundException e, Model model) {
+        model.addAttribute("errorMessage", "お探しのページは見つかりませんでした。");
+        return "error/404";
+    }
+}

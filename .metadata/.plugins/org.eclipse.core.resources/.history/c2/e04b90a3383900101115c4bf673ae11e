@@ -1,0 +1,30 @@
+package com.example.portfolio;
+
+import org.springframework.boot.CommandLineRunner;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.Bean;
+import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
+
+import com.example.portfolio.entity.Category;
+import com.example.portfolio.repository.CategoryRepository;
+
+@SpringBootApplication
+@EnableJpaAuditing
+public class PortfolioApplication {
+    public static void main(String[] args) {
+        SpringApplication.run(PortfolioApplication.class, args);
+    }
+        
+        @Bean
+        CommandLineRunner initCategories(CategoryRepository categoryRepository) {
+            return args -> {
+                if (categoryRepository.count() == 0) {
+                    categoryRepository.save(new Category(null, "仕事"));
+                    categoryRepository.save(new Category(null, "学習"));
+                    categoryRepository.save(new Category(null, "プライベート"));
+                }
+            };
+        
+    }
+}

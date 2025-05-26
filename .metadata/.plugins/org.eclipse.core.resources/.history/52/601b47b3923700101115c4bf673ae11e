@@ -1,0 +1,25 @@
+package com.example.portfolio.service;
+
+import java.util.List;
+import java.util.Optional;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.example.portfolio.entity.Category;
+import com.example.portfolio.repository.CategoryRepository;
+
+@Service
+public class CategoryService {
+
+	@Autowired
+	private CategoryRepository categoryRepository;
+	
+	public Optional<Category> findById(Long categoryId) {
+		return categoryRepository.findById(categoryId);
+	}
+	
+	public List<Category> findAll() {
+		return categoryRepository.findAll();
+	}
+}
