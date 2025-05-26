@@ -1,0 +1,12 @@
+# ビルド出力や設定ファイルなど除外したいもの
+
+target/
+.idea/
+*.iml
+*.log
+*.env
+.env.*
+.vscode/
+.DS_Store
+node_modules/
+.git
