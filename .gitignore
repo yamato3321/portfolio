@@ -30,6 +30,8 @@ Servers/
 /nbdist/
 /.nb-gradle/
 build/
+!**/src/main/**/build/
+!**/src/test/**/build/
 
 # VS Code
 .vscode/
@@ -37,3 +39,9 @@ build/
 # 環境変数ファイル
 .env
 .env.*
+
+# その他
+HELP.md
+!.mvn/wrapper/maven-wrapper.jar
+!**/src/main/**/target/
+!**/src/test/**/target/
