@@ -1,9 +1,0 @@
-package com.example.portfolio.entity;
-
-import lombok.Data;
-
-@Entyty
-@Data
-public class Category {
-
-}
