@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}">
+<head>
+    <title>プロフィール設定</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="stylesheet" th:href="@{/css/profile.css}">
+</head>
+<body>
+<div layout:fragment="content">
+    <div class="form-container">
+        <h1>プロフィール編集</h1>
+
+        <form th:action="@{/profile}" th:object="${editProfileForm}" method="post">
+            <label>メールアドレス（変更不可）:</label>
+            <input type="email" th:field="*{email}" readonly />
+
+            <label>名前:</label>
+            <input type="text" th:field="*{name}" required />
+
+            <label>現在のパスワード:</label>
+            <input type="password" th:field="*{currentPassword}" required />
+
+            <label>新しいパスワード:</label>
+            <input type="password" th:field="*{newPassword}" required />
+
+            <div class="button-group">
+                <button type="submit">更新</button>
+                <a th:href="@{/tasks}" class="btn-outline">戻る</a>
+            </div>
+        </form>
+
+        <div th:if="${param.updated}" class="message success">
+            <p>プロフィールを更新しました！</p>
+        </div>
+
+        <div th:if="${passwordError}" class="message error">
+            <p th:text="${passwordError}"></p>
+        </div>
+    </div>
+</div>
+</body>
+</html>

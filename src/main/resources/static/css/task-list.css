@@ -1,0 +1,104 @@
+@charset "UTF-8";
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f7f7f7;
+    padding: 20px;
+}
+
+h1 {
+    color: #333;
+    margin-bottom: 20px;
+}
+
+/* ヘッダーの整列 */
+.task-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+}
+
+.task-actions a.btn-primary {
+    background-color: #28a745;
+    padding: 8px 16px;
+    color: white;
+    border-radius: 4px;
+    font-weight: bold;
+}
+
+.task-actions a.btn-primary:hover {
+    background-color: #218838;
+}
+
+/* 検索ボックスのUI調整 */
+.search-controls {
+    background-color: #f9f9f9;
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    margin-bottom: 20px;
+}
+
+.search-controls form {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 10px;
+}
+
+.status-links {
+    margin: 10px 0;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #fff;
+    box-shadow: 0 0 10px rgba(0,0,0,0.05);
+}
+
+th, td {
+    padding: 12px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+th {
+    background-color: #f0f0f0;
+}
+
+button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+
+input[type="text"], select {
+    padding: 6px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+input[type="checkbox"] {
+    transform: scale(1.2);
+    margin-right: 6px;
+}
+
+.pagination {
+    margin-top: 20px;
+    font-weight: bold;
+}
+
+.footer-actions {
+    margin-top: 30px;
+    display: flex;
+    gap: 10px;
+}

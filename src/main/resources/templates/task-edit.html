@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}">
+<head>
+    <meta charset="UTF-8">
+    <title>タスク編集</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="stylesheet" th:href="@{/css/task-edit.css}">
+</head>
+<body>
+<div layout:fragment="content">
+    <div class="form-container">
+        <h1>タスク編集</h1>
+
+        <form th:action="@{/tasks/edit/{id}(id=${task.id})}" th:object="${task}" method="post">
+            <input type="hidden" th:field="*{id}" />
+
+            <label for="title">タイトル:</label>
+            <input type="text" id="title" th:field="*{title}" required />
+            <div th:if="${#fields.hasErrors('title')}" th:errors="*{title}" class="error"></div>
+
+            <label for="description">詳細:</label>
+            <textarea id="description" th:field="*{description}"></textarea>
+            <div th:if="${#fields.hasErrors('description')}" th:errors="*{description}" class="error"></div>
+
+            <label for="deadline">期限:</label>
+            <input type="date" id="deadline" th:field="*{deadline}" />
+            <div th:if="${#fields.hasErrors('deadline')}" th:errors="*{deadline}" class="error"></div>
+
+            <label for="category">カテゴリ:</label>
+            <select id="category" name="categoryId" required>
+                <option value="" disabled selected>カテゴリを選択</option>
+                <option th:each="cat : ${categories}"
+                        th:value="${cat.id}"
+                        th:text="${cat.name}"
+                        th:selected="${cat.id == categoryId}">
+                </option>
+            </select>
+
+            <label class="checkbox-label">
+                <input type="checkbox" th:field="*{completed}" />
+                完了
+            </label>
+
+            <div class="button-group">
+                <button type="submit">更新</button>
+                <a th:href="@{/tasks}" class="btn-outline">戻る</a>
+            </div>
+        </form>
+    </div>
+</div>
+</body>
+</html>

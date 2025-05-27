@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}">
+<head>
+    <meta charset="UTF-8">
+    <title>新規タスク登録</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="stylesheet" th:href="@{/css/task-form.css}">
+</head>
+<body>
+<div layout:fragment="content">
+    <div class="form-container">
+        <h1>新しいタスクを登録</h1>
+
+        <form th:action="@{/new}" method="post" th:object="${task}">
+            <label for="title">タイトル:</label>
+            <input type="text" id="title" th:field="*{title}" required />
+            <div th:if="${#fields.hasErrors('title')}" th:errors="*{title}" class="error"></div>
+
+            <label for="description">詳細:</label>
+            <textarea id="description" th:field="*{description}"></textarea>
+            <div th:if="${#fields.hasErrors('description')}" th:errors="*{description}" class="error"></div>
+
+            <label for="deadline">期限:</label>
+            <input type="date" id="deadline" th:field="*{deadline}" />
+            <div th:if="${#fields.hasErrors('deadline')}" th:errors="*{deadline}" class="error"></div>
+
+            <label for="category">カテゴリ:</label>
+            <select id="category" name="categoryId" required>
+                <option value="" disabled selected>カテゴリを選択</option>
+                <option th:each="cat : ${categories}"
+                        th:value="${cat.id}"
+                        th:text="${cat.name}"
+                        th:selected="${cat.id == categoryId}">
+                </option>
+            </select>
+
+            <label for="completed" class="checkbox-label">
+                <input type="checkbox" id="completed" th:field="*{completed}" />
+                完了
+            </label>
+
+            <div class="button-group">
+                <button type="submit">登録</button>
+                <a th:href="@{/tasks}" class="btn-outline">戻る</a>
+            </div>
+        </form>
+    </div>
+</div>
+</body>
+</html>
