@@ -1,14 +1,14 @@
-# 公式のJava 17環境を使う
-FROM eclipse-temurin:17-jdk-alpine
+# ベースイメージをAlpineでなくDebianスリムにする（arm64対応）
+FROM eclipse-temurin:17-jdk-jammy
 
-# アプリを置く作業フォルダを作成
+# 作業ディレクトリ作成
 WORKDIR /app
 
-# Mavenで作ったjarファイルをコピー
+# jarファイルをコンテナにコピー
 COPY target/portfolio-0.0.1-SNAPSHOT.jar app.jar
 
-# Spring Bootのデフォルトポートを開ける
+# ポート指定
 EXPOSE 8080
 
-# アプリを起動するコマンド
+# 実行コマンド
 ENTRYPOINT ["java", "-jar", "app.jar"]
