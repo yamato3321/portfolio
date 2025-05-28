@@ -46,6 +46,7 @@ public class Task {
 
     @FutureOrPresent(message ="期限は今日以降の日付を指定してください")
     private LocalDate deadline;
+    
     private boolean completed;
 
     @ManyToOne(fetch = FetchType.LAZY)

@@ -20,7 +20,35 @@ public interface TaskRepository extends JpaRepository<Task, Long> {
 		        User user2, String description,
 		        Pageable pageable
 		    );
+	
+    Page<Task> findByUserAndCategoryIdAndTitleContainingIgnoreCaseAndCompleted(
+            User user,
+            Long categoryId,
+            String keyword,
+            boolean completed,
+            Pageable pageable
+        );
     
+    Page<Task> findByUserAndTitleContainingIgnoreCaseAndCompleted(
+    	    User user, 
+    	    String keyword, 
+    	    boolean completed, 
+    	    Pageable pageable
+    	);
+    
+    Page<Task> findByUserAndCategoryIdAndCompleted(
+    	    User user, 
+    	    Long categoryId, 
+    	    boolean completed, 
+    	    Pageable pageable
+    	);
+
+    Page<Task> findByUserAndCompleted(
+    	    User user, 
+    	    boolean completed, 
+    	    Pageable pageable
+    	);
+
 //	Page<Task> findByUserAndCompletedAndTitleContainingIgnoreCaseOrUserAndCompletedAndDescriptionContainingIgnoreCase(
 //				User user1,boolean completed1,String title,
 //				User user2,boolean completed2,String description,

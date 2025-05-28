@@ -42,87 +42,99 @@ public class TaskController {
 
     // タスク一覧表示
     @GetMapping("/tasks")
-    public String showTaskList(@RequestParam( defaultValue = "asc")String sort, 
-    							@RequestParam(defaultValue = "deadline")String sortBy,
-    							@RequestParam (required = false) String status,
-    							@RequestParam(required = false) String keyword,
-    							@RequestParam(required = false) Long categoryId, 
-    							@RequestParam(defaultValue = "0") int page,
-    							Model model, Principal principal) {
-    	
+    public String showTaskList(@RequestParam(defaultValue = "asc") String sort,
+                               @RequestParam(defaultValue = "deadline") String sortBy,
+                               @RequestParam(required = false) String status,
+                               @RequestParam(required = false) String keyword,
+                               @RequestParam(required = false) Long categoryId,
+                               @RequestParam(defaultValue = "0") int page,
+                               Model model, Principal principal) {
+
         Optional<User> userOpt = userService.findByEmail(principal.getName());
-        
-        if(userOpt.isEmpty()) {
-        	 model.addAttribute("error", "未登録のユーザーです。");
-             return"login";
+
+        if (userOpt.isEmpty()) {
+            model.addAttribute("error", "未登録のユーザーです。");
+            return "login";
         }
-        
+
         User user = userOpt.get();
-        
-     // 並び順の指定
-        Sort sortOption = "desc".equalsIgnoreCase(sort)?
-        		Sort.by(Sort.Direction.DESC,sortBy):
-        		Sort.by(Sort.Direction.ASC,sortBy);
-        
-     // ページ情報の指定（1ページあたり5件）
-        Pageable pageable = PageRequest.of(page,5,sortOption);
-        
+
+        Sort sortOption = "desc".equalsIgnoreCase(sort)
+                ? Sort.by(Sort.Direction.DESC, sortBy)
+                : Sort.by(Sort.Direction.ASC, sortBy);
+
+        Pageable pageable = PageRequest.of(page, 5, sortOption);
         Page<Task> taskPage;
-        
-//        //キーワード検索 完了・未完了選別  ステータス絞り込み
-//        if (keyword != null && !keyword.isEmpty()) {
-//            if ("completed".equalsIgnoreCase(status)) {
-//                taskPage = taskService.searchTasksWithStatus(user, keyword, true, pageable);
-//            } else if ("incomplete".equalsIgnoreCase(status)) {
-//                taskPage = taskService.searchTasksWithStatus(user, keyword, false, pageable);
-//            } else {
-//                taskPage = taskService.searchTasks(user, keyword, pageable); // ステータス無視
-//            }
-//        } else {
-//            if ("completed".equalsIgnoreCase(status)) {
-//                taskPage = taskService.getTasksByUserAndStatus(user, true, pageable);
-//            } else if ("incomplete".equalsIgnoreCase(status)) {
-//                taskPage = taskService.getTasksByUserAndStatus(user, false, pageable);
-//            } else {
-//                taskPage = taskService.getTasksByUser(user, pageable); // ステータス無視
-//            }
-//        }
-        // カテゴリあり & キーワードなし
-        if (categoryId != null && (keyword == null || keyword.isEmpty())) {
-            taskPage = taskService.getTasksByUserAndCategory(user, categoryId, pageable);
+
+        // ------------------------
+        // フィルタ条件ごとの分岐
+        // ------------------------
+
+        // キーワードあり
+        if (keyword != null && !keyword.isEmpty()) {
+            // カテゴリ + ステータス + キーワード
+            if (categoryId != null) {
+                if ("completed".equalsIgnoreCase(status)) {
+                    taskPage = taskService.searchTasksByCategoryAndStatus(user, categoryId, keyword, true, pageable);
+                } else if ("incomplete".equalsIgnoreCase(status)) {
+                    taskPage = taskService.searchTasksByCategoryAndStatus(user, categoryId, keyword, false, pageable);
+                } else {
+                    taskPage = taskService.searchTasksByCategory(user, categoryId, keyword, pageable);
+                }
+            }
+            // ステータス + キーワードのみ
+            else {
+                if ("completed".equalsIgnoreCase(status)) {
+                    taskPage = taskService.searchTasksWithStatus(user, keyword, true, pageable);
+                } else if ("incomplete".equalsIgnoreCase(status)) {
+                    taskPage = taskService.searchTasksWithStatus(user, keyword, false, pageable);
+                } else {
+                    taskPage = taskService.searchTasks(user, keyword, pageable);
+                }
+            }
         }
-        // カテゴリ + キーワード
-        else if (categoryId != null && keyword != null && !keyword.isEmpty()) {
-            taskPage = taskService.searchTasksByCategory(user, categoryId, keyword, pageable);
-        }
-        // キーワードのみ
-        else if (keyword != null && !keyword.isEmpty()) {
-            taskPage = taskService.searchTasks(user, keyword, pageable);
-        }
-        // フルなし
+
+        // キーワードなし
         else {
-            taskPage = taskService.getTasksByUser(user, pageable);
+            // カテゴリ + ステータス
+            if (categoryId != null) {
+                if ("completed".equalsIgnoreCase(status)) {
+                    taskPage = taskService.getTasksByCategoryAndStatus(user, categoryId, true, pageable);
+                } else if ("incomplete".equalsIgnoreCase(status)) {
+                    taskPage = taskService.getTasksByCategoryAndStatus(user, categoryId, false, pageable);
+                } else {
+                    taskPage = taskService.getTasksByUserAndCategory(user, categoryId, pageable);
+                }
+            }
+            // ステータスのみ
+            else {
+                if ("completed".equalsIgnoreCase(status)) {
+                    taskPage = taskService.getTasksByUserAndStatus(user, true, pageable);
+                } else if ("incomplete".equalsIgnoreCase(status)) {
+                    taskPage = taskService.getTasksByUserAndStatus(user, false, pageable);
+                } else {
+                    taskPage = taskService.getTasksByUser(user, pageable);
+                }
+            }
         }
-        
-        
-        //（メモ：PageからListに変換してフィルタ）
-        List<Task> filteredTasks = taskPage.getContent();
-        
-        model.addAttribute("tasks", taskPage); // Page型のまま渡す
-        model.addAttribute("filteredTasks", filteredTasks); // 実際表示する用
+
+        // ------------------------
+        // モデルへの追加
+        // ------------------------
+
+        model.addAttribute("tasks", taskPage);
+        model.addAttribute("filteredTasks", taskPage.getContent());
         model.addAttribute("sort", sort);
         model.addAttribute("sortBy", sortBy);
         model.addAttribute("status", status);
         model.addAttribute("keyword", keyword);
-        model.addAttribute("loginName", user); //ログインユーザーの表示
-        model.addAttribute("categoryId", categoryId); 
-        model.addAttribute("categories", categoryService.findAll()); 
+        model.addAttribute("categoryId", categoryId);
+        model.addAttribute("categories", categoryService.findAll());
+        model.addAttribute("loginName", user);
 
-        
         return "task-list";
-        	
-        
     }
+
 
     // タスク登録フォーム表示
     @GetMapping("/new")
@@ -251,7 +263,7 @@ public class TaskController {
     public String updateTaskStatus(@RequestParam Long id,
                                    @RequestParam(required = false) String completed,
                                    Principal principal) {
-
+    	
         Optional<User> userOpt = userService.findByEmail(principal.getName());
         Optional<Task> taskOpt = taskService.findById(id);
 
@@ -262,6 +274,13 @@ public class TaskController {
             if (task.getUser().getId().equals(loginUser.getId())) {
                 // チェックボックスがオンなら"on"、オフならnullになる
                 task.setCompleted(completed != null);
+                
+                // ✅ Categoryの再取得（デタッチ対策）
+                if (task.getCategory() != null) {
+                    Long categoryId = task.getCategory().getId();
+                    Optional<Category> categoryOpt = categoryService.findById(categoryId);
+                    categoryOpt.ifPresent(task::setCategory);
+                }
                 taskService.save(task);
             }
         }

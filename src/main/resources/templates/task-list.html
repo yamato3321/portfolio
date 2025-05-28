@@ -17,47 +17,57 @@
     </div>
 
     <div class="search-controls">
-        <form method="get" th:action="@{/tasks}">
-            <label for="categoryId">カテゴリ:</label>
-            <select name="categoryId" id="categoryId">
-                <option value="">全て</option>
-                <option th:each="cat : ${categories}"
-                        th:value="${cat.id}"
-                        th:text="${cat.name}"
-                        th:selected="${cat.id == categoryId}">
-                </option>
-            </select>
+		<!-- 🔽 カテゴリ・並び順フォーム -->
+		<form method="get" th:action="@{/tasks}">
+		    <label for="categoryId">カテゴリ:</label>
+		    <select name="categoryId" id="categoryId">
+		        <option value="">全て</option>
+		        <option th:each="cat : ${categories}"
+		                th:value="${cat.id}"
+		                th:text="${cat.name}"
+		                th:selected="${cat.id == categoryId}">
+		        </option>
+		    </select>
 
-            <label>並び順：</label>
-            <select name="sortBy">
-                <option value="deadline" th:selected="${sortBy == 'deadline'}">期限</option>
-                <option value="title" th:selected="${sortBy == 'title'}">タイトル</option>
-                <option value="createdAt" th:selected="${sortBy == 'createdAt'}">作成日</option>
-            </select>
+		    <label>並び順：</label>
+		    <select name="sortBy">
+		        <option value="deadline" th:selected="${sortBy == 'deadline'}">期限</option>
+		        <option value="title" th:selected="${sortBy == 'title'}">タイトル</option>
+		        <option value="createdAt" th:selected="${sortBy == 'createdAt'}">作成日</option>
+		    </select>
 
-            <select name="sort">
-                <option value="asc" th:selected="${sort == 'asc'}">昇順</option>
-                <option value="desc" th:selected="${sort == 'desc'}">降順</option>
-            </select>
+		    <select name="sort">
+		        <option value="asc" th:selected="${sort == 'asc'}">昇順</option>
+		        <option value="desc" th:selected="${sort == 'desc'}">降順</option>
+		    </select>
 
-            <input type="hidden" name="status" th:value="${status}" />
-            <input type="hidden" name="keyword" th:value="${keyword}" />
-            <button type="submit">並び替え</button>
-        </form>
+		    <!-- 🔽 他の絞り込み情報を保持 -->
+		    <input type="hidden" name="status" th:value="${status}" />
+		    <input type="hidden" name="keyword" th:value="${keyword}" />
 
-        <div class="status-links">
-            <span>絞り込み:</span>
-            <a th:href="@{/tasks(sort=${sort},keyword=${keyword},sortBy=${sortBy})}">全て</a>
-            <a th:href="@{/tasks(sort=${sort},status='incomplete',keyword=${keyword},sortBy=${sortBy})}">未完了</a>
-            <a th:href="@{/tasks(sort=${sort},status='completed',keyword=${keyword},sortBy=${sortBy})}">完了</a>
-        </div>
+		    <button type="submit">並び替え</button>
+		</form>
 
-        <form th:action="@{/tasks}" method="get" class="keyword-form">
-            <input type="text" name="keyword" placeholder="キーワード検索" th:value="${keyword}" />
-            <input type="hidden" name="sort" th:value="${sort}" />
-            <input type="hidden" name="status" th:value="${status}" />
-            <button type="submit">検索</button>
-        </form>
+		<!-- 🔽 完了 / 未完了フィルタリンク -->
+		<div class="status-links">
+		    <span>絞り込み:</span>
+		    <a th:href="@{/tasks(sort=${sort},sortBy=${sortBy},categoryId=${categoryId},keyword=${keyword})}">全て</a>
+		    <a th:href="@{/tasks(sort=${sort},sortBy=${sortBy},categoryId=${categoryId},status='incomplete',keyword=${keyword})}">未完了</a>
+		    <a th:href="@{/tasks(sort=${sort},sortBy=${sortBy},categoryId=${categoryId},status='completed',keyword=${keyword})}">完了</a>
+		</div>
+
+		<!-- 🔽 キーワード検索フォーム -->
+		<form th:action="@{/tasks}" method="get" class="keyword-form">
+		    <input type="text" name="keyword" placeholder="キーワード検索" th:value="${keyword}" />
+
+		    <!-- 🔽 他の条件を保持 -->
+		    <input type="hidden" name="sort" th:value="${sort}" />
+		    <input type="hidden" name="sortBy" th:value="${sortBy}" />
+		    <input type="hidden" name="status" th:value="${status}" />
+		    <input type="hidden" name="categoryId" th:value="${categoryId}" />
+
+		    <button type="submit">検索</button>
+		</form>
     </div>
 
     <table>

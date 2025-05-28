@@ -27,6 +27,23 @@ public class TaskService {
     	return taskRepository.findByUserAndTitleContainingIgnoreCaseOrUserAndDescriptionContainingIgnoreCase(user, keyword, user, keyword, pageable);
     }
     
+    public Page<Task> searchTasksByCategoryAndStatus(User user, Long categoryId, String keyword, boolean completed, Pageable pageable) {
+        return taskRepository.findByUserAndCategoryIdAndTitleContainingIgnoreCaseAndCompleted(
+            user, categoryId, keyword, completed, pageable);
+    }
+    
+    public Page<Task> searchTasksWithStatus(User user, String keyword, boolean completed, Pageable pageable) {
+        return taskRepository.findByUserAndTitleContainingIgnoreCaseAndCompleted(user, keyword, completed, pageable);
+    }
+
+    public Page<Task> getTasksByCategoryAndStatus(User user, Long categoryId, boolean completed, Pageable pageable) {
+        return taskRepository.findByUserAndCategoryIdAndCompleted(user, categoryId, completed, pageable);
+    }
+
+    public Page<Task> getTasksByUserAndStatus(User user, boolean completed, Pageable pageable) {
+        return taskRepository.findByUserAndCompleted(user, completed, pageable);
+    }
+
 //    public Page<Task> searchTasksWithStatus(User user, String keyword, boolean completed, Pageable pageable) {
 //        return taskRepository.findByUserAndCompletedAndTitleContainingIgnoreCaseOrUserAndCompletedAndDescriptionContainingIgnoreCase(
 //            user, completed, keyword, user, completed, keyword, pageable);

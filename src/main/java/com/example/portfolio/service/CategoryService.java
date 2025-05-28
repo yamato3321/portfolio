@@ -49,8 +49,9 @@ public class CategoryService {
 	}
 
 	public List<Category> findForUser(User user) {
-	    return categoryRepository.findByUserOrSharedTrue(user);
+	    return categoryRepository.findForUserOrShared(user);
 	}
+
 
 
 }
