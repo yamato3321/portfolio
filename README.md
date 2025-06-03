@@ -9,7 +9,7 @@
 - Spring Security
 - Spring Data JPA
 - Thymeleaf
-- H2 / MySQL
+- postgreDB
 - CSS（カスタム）
 - GitHub Actions（CI/CD 準備中）
 
