@@ -51,14 +51,14 @@ src
     └── java/com/example/portfolio
 ```
 
-## 🚀 起動方法（ローカル）
+## 🚀 起動方法
+- URL：https://portfolio-yjxu.onrender.com
+- 
+- ## 🧪 ログイン情報（デモ用）
+- メールアドレス：`guest@email`
+- パスワード：`11111111`
 
-1. このリポジトリをクローン  
-   `git clone https://github.com/yamato3321/portfolio`
-2. `application.properties` を適切に設定（MySQL or H2）
-3. IDE で起動 または `mvn spring-boot:run`
+※ 初回読み込みに数秒かかる場合があります
 
 ## 📌 補足
-
-- 現在は Heroku/Render へのデプロイを準備中です
 - テストコードは今後追加予定です
